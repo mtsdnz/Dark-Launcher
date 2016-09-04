@@ -22,5 +22,10 @@ namespace Dark_Launcher.View
 
             this.Close();
         }
+
+        private void LoadConfigurations()
+        {
+
+        }
     }
 }

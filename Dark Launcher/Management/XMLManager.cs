@@ -4,7 +4,7 @@ namespace Dark_Launcher.Management
 {
     public sealed class XMLManager
     {
-        public static XMLManager CreateNinjaXML()
+        public static XMLManager CreateXML()
         {
             return new XMLManager();
         }

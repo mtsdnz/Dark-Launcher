@@ -19,8 +19,30 @@ namespace Dark_Launcher.Constants
         public const string LauncherWindowTitle = "Launcher GC XX";
         #endregion
 
-        #region InternalConfigs
-        public const string DefaultLogFileName = "LauncherError.log";
+        #region Internal Path Configs
+        public const string PathLogFileName = "LauncherError.log";
         #endregion
+
+        #region Launcher Cryptography Settings
+        /// <summary>
+        /// The AES key that your LauncherConfig.xml will be encrypted
+        /// </summary>
+        public const string AESKey = "darkherotest";
+
+        /// <summary>
+        /// This constant is used to determine the keysize of the encryption algorithm.
+        /// </summary>
+        public const int KeySize = 256;
+        #endregion
+
+        #region Game Configs
+        /// <summary>
+        /// Main parameter
+        /// </summary>
+        public readonly string MainParameter = "parameter123";
+
+        #endregion
+        
+
     }
 }

@@ -20,7 +20,7 @@ namespace Dark_Launcher.Management
             }
         }
 
-        public static void Write(string error, LogType logType = LogType.ERROR)
+        public static void WriteLog(string error, LogType logType = LogType.ERROR)
         {
             writeOnFile(string.Format("[{0}] <{1}>: {2}", DateTime.Now, logType, error));
         }
@@ -29,7 +29,7 @@ namespace Dark_Launcher.Management
         {
             try
             {
-                using (TextWriter Writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, Constants.LauncherConstants.DefaultLogFileName)))
+                using (TextWriter Writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, Constants.LauncherConstants.PathLogFileName)))
                 {
                     Writer.WriteLine(stringToWrite);
                 }

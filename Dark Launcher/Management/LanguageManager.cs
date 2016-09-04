@@ -37,7 +37,7 @@ namespace Dark_Launcher.Management
             }
             catch (Exception er)
             {
-                LogManager.Write("Exception on load languages:" + er.Message);
+                LogManager.WriteLog("Exception on load languages:" + er.Message);
             }
         }
 
@@ -66,7 +66,7 @@ namespace Dark_Launcher.Management
             }
             catch (Exception er)
             {
-                LogManager.Write("Exception on load language strings: " + er.Message);
+                LogManager.WriteLog("Exception on load language strings: " + er.Message);
                 return null;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dark_Launcher.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,18 @@ namespace Dark_Launcher.Management
         public LauncherInitializer()
         {
             loadLanguage();
+
+            var configs = new LauncherConfigurationsManager();
+            configs.LoadInternalConfigs("LauncherInternalConfig.xml");
         }
 
         private void loadLanguage()
         {
             LanguageManager languageManager = new LanguageManager();
             languageManager.LoadLanguages();
-            languageManager.LoadLanguageStrings(1);
+            languageManager.LoadLanguageStrings(LauncherConstants.DefaultLanguageID);
         }
+
+
     }
 }
