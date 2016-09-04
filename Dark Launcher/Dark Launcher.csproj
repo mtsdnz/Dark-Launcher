@@ -78,6 +78,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Base\Language.cs" />
+    <Compile Include="ExtensionMethods\XMLNodeExtensionMethods.cs" />
+    <Compile Include="Management\LanguageManager.cs" />
+    <Compile Include="Management\LauncherInitializer.cs" />
+    <Compile Include="Management\LogManager.cs" />
+    <Compile Include="Management\XMLManager.cs" />
+    <Compile Include="ViewModel\SplashViewModel.cs" />
     <Compile Include="View\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -153,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="Management\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\1.png" />

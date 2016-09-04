@@ -8,10 +8,10 @@ namespace Dark_Launcher
     /// <summary>
     /// Interaction logic for Launcher.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LauncherMainWindow : Window
     {
 
-        public MainWindow()
+        public LauncherMainWindow()
         {
             InitializeComponent();
             var launcherViewModel = new LauncherViewModel();
