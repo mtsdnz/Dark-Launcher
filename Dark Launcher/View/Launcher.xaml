@@ -1,0 +1,134 @@
+﻿<Window x:Class="Dark_Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dark_Launcher"
+        mc:Ignorable="d"
+        MouseDown="OnDragWindow"
+        TextOptions.TextHintingMode="Fixed"
+        TextOptions.TextFormattingMode="Display"
+        FontWeight="Light"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Title="Dark Launcher" Height="558" Width="823">
+    <Window.Background>
+        <!--Background-->
+        <ImageBrush ImageSource="pack://application:,,,/Resources/Images/bg.png"></ImageBrush>
+    </Window.Background>
+    <Grid>
+        <!-- LAUNCHER TOP GRID -->
+        <Grid VerticalAlignment="Top">
+            <!-- LOGO -->
+            <Image Source="pack://application:,,,/Resources/Images/logo.jpg" Width="290" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top"></Image>
+
+            <!-- CLOSE BUTTON -->
+            <Button x:Name="CloseButton" Style="{StaticResource sCloseButton}" HorizontalAlignment="Right" Margin="0,144,10,396" RenderTransformOrigin="0.275,-3.158"></Button>
+
+            <!-- LAUNCHER TITLE -->
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBlock Text="LAUNCHER TITLE XXXXXXXXXXXXX" FontWeight="Bold" Margin="10,148" FontSize="17" Foreground="#909090" FontFamily="Segoe UI Light" >
+                </TextBlock>
+            </Grid>
+
+        </Grid>
+
+        <!-- LAUNCHER MIDDLE GRID -->
+        <Grid VerticalAlignment="Center" Height="270" Margin="0,70,500,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="160"/>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+
+            <ListBox Grid.Row="1" ItemsSource="{Binding LauncherNews}" Background="Transparent" BorderThickness="0" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Imagens(1,2,3,4,5) -->
+                                <TextBlock Margin="5,3">
+                                        <TextBlock>
+                                            <!-- Conteúdo[Texto] da noticia -->
+                                            <Hyperlink FontFamily="Arial" NavigateUri="{Binding Url}" Foreground="White" FontSize="13" RequestNavigate="Hyperlink_RequestNavigate" FontWeight="Bold" TextDecorations="none" >
+                                                <TextBlock Text="{Binding Date}" Foreground="#26B4EA"/>
+                                                <TextBlock Text="{Binding Title}" />
+                                            </Hyperlink>
+                                       </TextBlock>
+                                    </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
+            <!-- last news textblock-->
+            <TextBlock Text="LAST NEWS" Margin="10,0" Style="{StaticResource LastNewsText}"></TextBlock>
+            
+            <!-- see more hyperlink -->
+            <TextBlock Grid.Row="2" Margin="20,0" Style="{StaticResource ServerStatus}" Foreground="White"  VerticalAlignment="Center">
+                <Hyperlink NavigateUri="http://forum.gchistory.net/index.php?/forum/8-not%C3%ADcias-e-novidades/" FontSize="14" FontFamily="Arial" TextDecorations="none" FontWeight="DemiBold" Foreground="White">
+                    See more...
+                </Hyperlink>
+            </TextBlock>
+            
+            <!-- server status grid -->
+            <Grid Grid.Row="3" Height="30" Width="200" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,10" >
+                <Border Grid.Column="0" Name="mask" Background="#242424" CornerRadius="4" Margin="0,0,0,0"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" Text="Server status:" Style="{StaticResource ServerStatus}" Foreground="White" Margin="5,0" />
+
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="1" Text="Online" Style="{StaticResource ServerStatus}" Foreground="Green" Margin="0,0"/>
+                </Grid>
+            </Grid>
+
+        </Grid>
+
+        <!-- LAUNCHER BOTTOM GRID -->
+        <Grid VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="566"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--PROGRESS BAR FILE -->
+            <Grid Grid.Column="1" Grid.ColumnSpan="2">
+                <ProgressBar x:Name="FileProgress" Value="20.54" Margin="0,50" VerticalAlignment="Center" Height="25"/>
+                <TextBlock Text="{Binding ElementName=FileProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23"/>
+            </Grid>
+
+            <!--PROGRESS BAR TOTAL -->
+            <Grid Grid.Column="1" Grid.ColumnSpan="2">
+                <ProgressBar x:Name="TotalProgress" Value="1" Margin="0,79,0,21" VerticalAlignment="Center" Height="25"/>
+                <TextBlock Text="{Binding ElementName=TotalProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23" Margin="0,0,0,-60"/>
+            </Grid>
+
+
+            <!-- TEXT BLOCK FILE -->
+            <TextBlock Grid.Column="0" Style="{StaticResource DefaultText}" Text="Arquivo: " HorizontalAlignment="Left" Margin="20,45,0,55"/>
+
+            <!-- TEXT BLOCK TOTAL -->
+            <TextBlock Grid.Column="0" Style="{StaticResource DefaultText}" Text="Total: " HorizontalAlignment="Left" Margin="20,75,0,25"/>
+
+            <!-- PROGRESS TEXT -->
+            <TextBlock Grid.Column="2" Style="{StaticResource DefaultText}" Text="Updating files..." VerticalAlignment="Top" HorizontalAlignment="Center" Margin="229,25,243,0">
+            </TextBlock>
+
+            <!-- PLAY BUTTON -->
+            <Button Grid.Column="3" Style="{StaticResource PlayButton}" Content="PLAY"  IsEnabled="True" Margin="14,38,14,17"/>
+        </Grid>
+
+    </Grid>
+</Window>

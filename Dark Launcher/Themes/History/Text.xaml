@@ -1,0 +1,27 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Dark_Launcher">
+
+
+    <Style x:Key="DefaultText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15"></Setter>
+        <Setter Property="Foreground" Value="#909090"></Setter>
+        <Setter Property="FontFamily" Value="Segoe UI Light"></Setter>
+        <Setter Property="Width" Value="auto"></Setter>
+    </Style>
+    
+    <Style x:Key="LastNewsText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Resources/Fonts/#Agency FB"/>
+        <Setter Property="FontSize" Value="34"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+ 
+    <Style x:Key="ServerStatus" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+</ResourceDictionary>
