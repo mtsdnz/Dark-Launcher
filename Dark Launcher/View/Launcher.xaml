@@ -69,14 +69,14 @@
 
             <!-- last news textblock-->
             <TextBlock Text="LAST NEWS" Margin="10,0" Style="{StaticResource LastNewsText}"></TextBlock>
-            
+
             <!-- see more hyperlink -->
             <TextBlock Grid.Row="2" Margin="20,0" Style="{StaticResource ServerStatus}" Foreground="White"  VerticalAlignment="Center">
                 <Hyperlink NavigateUri="http://forum.gchistory.net/index.php?/forum/8-not%C3%ADcias-e-novidades/" FontSize="14" FontFamily="Arial" TextDecorations="none" FontWeight="DemiBold" Foreground="White">
                     See more...
                 </Hyperlink>
             </TextBlock>
-            
+
             <!-- server status grid -->
             <Grid Grid.Row="3" Height="30" Width="200" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,10" >
                 <Border Grid.Column="0" Name="mask" Background="#242424" CornerRadius="4" Margin="0,0,0,0"/>
@@ -85,7 +85,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBlock HorizontalAlignment="Left" Grid.Column="0" Text="Server status:" Style="{StaticResource ServerStatus}" Foreground="White" Margin="5,0" />
 
                     <TextBlock HorizontalAlignment="Left" Grid.Column="1" Text="Online" Style="{StaticResource ServerStatus}" Foreground="Green" Margin="0,0"/>
@@ -95,40 +95,42 @@
         </Grid>
 
         <!-- LAUNCHER BOTTOM GRID -->
-        <Grid VerticalAlignment="Bottom">
+        <Grid VerticalAlignment="Bottom" Margin="0,0" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="14"/>
-                <ColumnDefinition Width="566"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="560"/>
             </Grid.ColumnDefinitions>
 
             <!--PROGRESS BAR FILE -->
-            <Grid Grid.Column="1" Grid.ColumnSpan="2">
-                <ProgressBar x:Name="FileProgress" Value="20.54" Margin="0,50" VerticalAlignment="Center" Height="25"/>
+            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+                <ProgressBar x:Name="FileProgress" Value="20.54" Margin="0,0" VerticalAlignment="Center" Height="25"/>
                 <TextBlock Text="{Binding ElementName=FileProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23"/>
             </Grid>
 
             <!--PROGRESS BAR TOTAL -->
-            <Grid Grid.Column="1" Grid.ColumnSpan="2">
-                <ProgressBar x:Name="TotalProgress" Value="1" Margin="0,79,0,21" VerticalAlignment="Center" Height="25"/>
-                <TextBlock Text="{Binding ElementName=TotalProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23" Margin="0,0,0,-60"/>
+            <Grid Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                <ProgressBar x:Name="TotalProgress" Value="1" Margin="0,10" VerticalAlignment="Center" Height="25"/>
+                <TextBlock Text="{Binding ElementName=TotalProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23" Margin="0,0"/>
             </Grid>
 
-
             <!-- TEXT BLOCK FILE -->
-            <TextBlock Grid.Column="0" Style="{StaticResource DefaultText}" Text="Arquivo: " HorizontalAlignment="Left" Margin="20,45,0,55"/>
+            <TextBlock Grid.Column="0" Style="{StaticResource DefaultText}" Text="Arquivo: " Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,5" Grid.Row="1"/>
 
             <!-- TEXT BLOCK TOTAL -->
-            <TextBlock Grid.Column="0" Style="{StaticResource DefaultText}" Text="Total: " HorizontalAlignment="Left" Margin="20,75,0,25"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource DefaultText}" Text="Total: " Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="23,0,0,10"/>
 
             <!-- PROGRESS TEXT -->
-            <TextBlock Grid.Column="2" Style="{StaticResource DefaultText}" Text="Updating files..." VerticalAlignment="Top" HorizontalAlignment="Center" Margin="229,25,243,0">
+            <TextBlock Grid.Column="1"  Grid.Row="0" Style="{StaticResource DefaultText}" Text="Updating files..." VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10">
             </TextBlock>
-
-            <!-- PLAY BUTTON -->
-            <Button Grid.Column="3" Style="{StaticResource PlayButton}" Content="PLAY"  IsEnabled="True" Margin="14,38,14,17"/>
         </Grid>
-
+        
+        <!-- PLAY BUTTON -->
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="3" Style="{StaticResource PlayButton}" Content="PLAY"  IsEnabled="True" Margin="20,10"/>
     </Grid>
 </Window>
