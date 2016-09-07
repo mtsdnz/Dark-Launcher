@@ -7,7 +7,7 @@ namespace Dark_Launcher.Constants
         /// <summary>
         /// The url of the file "LauncherInternalConfig.xml"
         /// </summary>
-        public readonly string InternalConfigFileURL = "http://localhost/LauncherInternalConfig.xml";
+        public const string InternalConfigFileURL = "http://10.211.55.3/launcher/LauncherInternalConfig.xml";
 
         //the configurations below are loaded from LauncherConfig.xml
         public static string FileListURL;

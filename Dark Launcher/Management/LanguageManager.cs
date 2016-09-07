@@ -1,6 +1,6 @@
 ﻿using Dark_Launcher.Base;
 using Dark_Launcher.Constants;
-using Dark_Launcher.ExtensionMethods;
+using Launcher.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

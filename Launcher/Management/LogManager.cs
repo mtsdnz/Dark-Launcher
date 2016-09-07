@@ -29,7 +29,7 @@ namespace Dark_Launcher.Management
         {
             try
             {
-                using (TextWriter Writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, Constants.LauncherConstants.PathLogFileName)))
+                using (TextWriter Writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, "LauncherError.log")))
                 {
                     Writer.WriteLine(stringToWrite);
                 }

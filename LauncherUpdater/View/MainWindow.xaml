@@ -1,0 +1,20 @@
+﻿<Window x:Class="LauncherUpdater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LauncherUpdater"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="MainWindow" Height="80" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Updating launcher, please wait..." HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+        <ProgressBar Grid.Row="1" Width="400" Height="25"/>
+    </Grid>
+</Window>

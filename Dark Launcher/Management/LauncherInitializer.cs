@@ -14,7 +14,7 @@ namespace Dark_Launcher.Management
             loadLanguage();
 
             var configs = new LauncherConfigurationsManager();
-            configs.LoadInternalConfigs("LauncherInternalConfig.xml");
+            configs.LoadInternalConfigs();
         }
 
         private void loadLanguage()
@@ -23,7 +23,5 @@ namespace Dark_Launcher.Management
             languageManager.LoadLanguages();
             languageManager.LoadLanguageStrings(LauncherConstants.DefaultLanguageID);
         }
-
-
     }
 }

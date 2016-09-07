@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 
-namespace Dark_Launcher.ExtensionMethods
+namespace Launcher.ExtensionMethods
 {
     public static class XMLNodeExtension
     {

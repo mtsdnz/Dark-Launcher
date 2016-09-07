@@ -2,19 +2,19 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Dark_Launcher.Constants;
 
-namespace Dark_Launcher.Management
+namespace Launcher.Cryptography
 {
-    public class AESManager : ICryptography
+    class LauncherAES
     {
         private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("tu89geji340t89u2");
+        private int keySize = 256;
         public string Decrypt(string text, string key)
         {
             byte[] cipherTextBytes = Convert.FromBase64String(text);
             using (PasswordDeriveBytes password = new PasswordDeriveBytes(key, null))
             {
-                byte[] keyBytes = password.GetBytes(LauncherConstants.KeySize / 8);
+                byte[] keyBytes = password.GetBytes(keySize / 8);
                 using (RijndaelManaged symmetricKey = new RijndaelManaged())
                 {
                     symmetricKey.Mode = CipherMode.CBC;
@@ -39,7 +39,7 @@ namespace Dark_Launcher.Management
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(text);
             using (PasswordDeriveBytes password = new PasswordDeriveBytes(key, null))
             {
-                byte[] keyBytes = password.GetBytes(LauncherConstants.KeySize / 8);
+                byte[] keyBytes = password.GetBytes(keySize / 8);
                 using (RijndaelManaged symmetricKey = new RijndaelManaged())
                 {
                     symmetricKey.Mode = CipherMode.CBC;
