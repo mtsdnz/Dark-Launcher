@@ -1,14 +1,14 @@
-﻿using Dark_Launcher.Constants;
+﻿using Launcher.SharedConstants;
 using System.Diagnostics;
 
 namespace Dark_Launcher.Settings
 {
-    public class LauncherSettings
+    public static class LauncherSettings
     {
         /// <summary>
         /// The current launcher version
         /// </summary>
-        public string Version
+        public static string CurrentVersion
         {
             get
             {
@@ -21,14 +21,14 @@ namespace Dark_Launcher.Settings
         /// Is outdated version
         /// </summary>
         /// <returns><c>true</c>, if the launcher is outdated, <c>false</c> otherwise.</returns>
-        public bool IsOutdatedVersion
+        public static bool IsOutdatedVersion
         {
            get
             {
 #if DEBUG
-                Debug.Print("Current version -> " + Version + " FTP LauncherVersion -> " + FTPSettings.LauncherVersion);
+                Debug.Print("Current version -> " + CurrentVersion + " FTP LauncherVersion -> " + FTPSharedSettings.LauncherVersion);
 #endif
-                return Version != FTPSettings.LauncherVersion;
+                return CurrentVersion != FTPSharedSettings.LauncherVersion;
             }
         }
 

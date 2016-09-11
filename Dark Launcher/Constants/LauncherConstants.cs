@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dark_Launcher.Constants
+﻿namespace Dark_Launcher.Constants
 {
     internal sealed class LauncherConstants
     {
@@ -19,19 +17,11 @@ namespace Dark_Launcher.Constants
         public const string LauncherWindowTitle = "Launcher GC XX";
         #endregion
 
-        #region Launcher Cryptography Settings
-        /// <summary>
-        /// The AES key that your LauncherConfig.xml will be encrypted
-        /// </summary>
-        public const string AESKey = "darkherotest";
-        #endregion
-
         #region Game Configs
         /// <summary>
         /// Main parameter
         /// </summary>
-        public readonly string MainParameter = "parameter123";
-
+        public readonly string GameExecuteCommandArgs = "main.exe parameter123";
         #endregion
         
 

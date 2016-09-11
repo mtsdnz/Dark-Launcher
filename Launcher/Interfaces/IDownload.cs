@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Net;
-namespace Dark_Launcher.Management.Interfaces
+namespace Launcher.Interfaces
 {
     /// <summary>
-    /// Download interface, will be updated soon.
+    /// Download interface
     /// </summary>
     interface IDownload
     {
-        void DownloadFile(string url, string filePath, AsyncCompletedEventHandler downloadCompletedDelegate, DownloadProgressChangedEventHandler downloadProgressChanged = null);
+        void DownloadFileAsync(string url, string filePath, AsyncCompletedEventHandler downloadCompletedDelegate, DownloadProgressChangedEventHandler downloadProgressChanged = null);
         void DownloadString(string url, DownloadStringCompletedEventHandler downloadCompletedDelegate);
     }
 }

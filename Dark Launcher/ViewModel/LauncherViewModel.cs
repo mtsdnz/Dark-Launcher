@@ -1,6 +1,7 @@
 ﻿using Dark_Launcher.Base;
 using Dark_Launcher.Command;
 using Dark_Launcher.Constants;
+using Dark_Launcher.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,12 +18,12 @@ namespace Dark_Launcher.ViewModel
     public sealed class LauncherViewModel : ViewModelBase
     {
         public Dispatcher UIDispatcher;
-        
-        private ObservableCollection<News> launcherNews;
-        public ObservableCollection<News> LauncherNews
+
+        private IList<News> launcherNews;
+        public IList<News> LauncherNews
         {
             get { return launcherNews; }
-            set { SetAndNotify(ref launcherNews, value, "LauncherNews"); }
+            set { SetAndNotify(ref launcherNews, value); }
         }
 
         #region Commands
@@ -30,7 +31,14 @@ namespace Dark_Launcher.ViewModel
         public ICommand PlayCommand
         {
             get { return playCommand; }
-            set { SetAndNotify(ref playCommand, value, "PlayCommand"); }
+            set { SetAndNotify(ref playCommand, value); }
+        }
+
+        public ICommand closeCommand;
+        public ICommand CloseCommand
+        {
+            get { return closeCommand; }
+            set { SetAndNotify(ref closeCommand, value); }
         }
         #endregion
 
@@ -42,18 +50,24 @@ namespace Dark_Launcher.ViewModel
         public string FileStr { get { return GetString(4); } }
         public string TotalStr { get { return GetString(5); } }
         public string PlayButtonStr { get { return GetString(6).ToUpper(); } }
-        public string CurrentTask { get; set; }
         public string LauncherWindowTitle { get { return LauncherConstants.LauncherWindowTitle; } }
         public string LauncherTitle { get { return LauncherConstants.LauncherTitle; } }
+
+        private string _currentTask;
+        public string CurrentTask {
+            get { return _currentTask; }
+            set { SetAndNotify(ref _currentTask, value); }
+        }
 
         #endregion
 
         public LauncherViewModel()
         {
-            Console.WriteLine("initialized!");
             PlayCommand = new RelayCommand(ExecutePlayCommand);
-            LauncherNews = new ObservableCollection<News>();
-            launcherNews.Add( new News { Title= "NEWS TITLE TEST 1", Date = "02/02/2012", Url="http://google.com.br" } );
+            CloseCommand = new RelayCommand(ExecuteCloseCommand);
+            LauncherNews = new List<News>();
+
+            launcherNews.Add(new News { Title = "NEWS TITLE TEST 1", Date = "02/02/2012", Url = "http://google.com.br" });
             LauncherNews.Add(new News { Title = "News title test 2", Date = "03/03/2013", Url = "http://google.com.br" });
 
             CurrentTask = "Initializing update...";
@@ -63,6 +77,12 @@ namespace Dark_Launcher.ViewModel
         private void ExecutePlayCommand(object param)
         {
             MessageBox.Show("played!");
+            CurrentTask = "playing";
+        }
+
+        private void ExecuteCloseCommand(object obj)
+        {
+            Environment.Exit(1);
         }
         #endregion
 

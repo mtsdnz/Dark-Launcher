@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Dark_Launcher.Management
+namespace Launcher.Management
 {
     public sealed class XMLManager
     {
@@ -34,4 +34,5 @@ namespace Dark_Launcher.Management
         }
 
     }
+
 }

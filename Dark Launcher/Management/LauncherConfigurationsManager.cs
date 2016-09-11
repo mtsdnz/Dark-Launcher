@@ -5,25 +5,30 @@ using Dark_Launcher.Settings;
 using System.IO;
 using System.ComponentModel;
 using System.Diagnostics;
+using Launcher.SharedConstants;
+using Launcher.Management;
+using Launcher.Helpers;
 
 namespace Dark_Launcher.Management
 {
     internal class LauncherConfigurationsManager
     {
+        public delegate void OnConfigurationsLoad();
+        public event OnConfigurationsLoad OnConfigurationsLoaded; 
+
         public void LoadInternalConfigs()
         {
             DownloadManager dm = new DownloadManager();
-
             //TODO: Change to TEMP folder!
             //Path.TempFolder()
             var filePath = Path.Combine(Environment.CurrentDirectory, "LauncherInternalConfig.xml");
-            dm.DownloadFile(FTPSettings.InternalConfigFileURL, filePath, onDownloadInternalConfigFileComplete);
+            dm.DownloadFileAsync(LauncherSharedConstants.InternalConfigFileURL, LauncherSharedConstants.InternalConfigFilePath, onDownloadInternalConfigFileCompleted);
             
         }
 
-        private void onDownloadInternalConfigFileComplete(object sender, AsyncCompletedEventArgs e)
+        private void onDownloadInternalConfigFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            if (DownloadManager.ValidateFile(e))
+            if (NetworkHelper.ValidateDownloadedFile(e))
             {
                 //TODO: Remove this on final version
 #if DEBUG
@@ -47,11 +52,12 @@ namespace Dark_Launcher.Management
                 xmlManager.InitializeFromFile(xmlFilePath);
                 
                 XmlNode internalConfigsNode = xmlManager.GetNode("internalConfigs");
-                FTPSettings.LauncherVersion = internalConfigsNode.SelectSingleNode("version").InnerText;
-                FTPSettings.UpdaterURL = internalConfigsNode.SelectSingleNode("launcherUpdateLink").InnerText;
+                FTPSharedSettings.LauncherVersion = internalConfigsNode.SelectSingleNode("version").InnerText;
+                FTPSharedSettings.UpdaterURL = internalConfigsNode.SelectSingleNode("launcherUpdateLink").InnerText;
                 FTPSettings.ClientMirrorURL = internalConfigsNode.SelectSingleNode("clientMirror").InnerText;
                 FTPSettings.FileListURL = internalConfigsNode.SelectSingleNode("fileListURL").InnerText;
                 
+
                 XmlNode newsNode = internalConfigsNode.SelectSingleNode("news");
                 FTPSettings.ForumURL = newsNode.SelectSingleNode("forumURL").InnerText;
                 FTPSettings.XMLNewsURL = newsNode.SelectSingleNode("xmlNewsUrl").InnerText;
@@ -59,10 +65,11 @@ namespace Dark_Launcher.Management
 
                 LauncherSettings.IsOnMaintenance = bool.Parse(internalConfigsNode.SelectSingleNode("maintenance").InnerText);
 
-                if (!HasLoadedAllInternalConfigs(FTPSettings.LauncherVersion, FTPSettings.UpdaterURL, FTPSettings.ClientMirrorURL, FTPSettings.FileListURL, FTPSettings.ForumURL, FTPSettings.XMLNewsURL))
+                if (!HasLoadedAllInternalConfigs(FTPSharedSettings.LauncherVersion, FTPSharedSettings.UpdaterURL, FTPSettings.ClientMirrorURL, FTPSettings.FileListURL, FTPSettings.ForumURL, FTPSettings.XMLNewsURL))
                 {
                     LogManager.WriteLog("Not all internal configs was loaded correctly.");
                 }
+                OnConfigurationsLoaded();
 
 #if DEBUG
                 Debug.Print("Internal configs loaded sucessfully");
@@ -90,7 +97,5 @@ namespace Dark_Launcher.Management
             }
             return true;
         }
-
-
     }
 }

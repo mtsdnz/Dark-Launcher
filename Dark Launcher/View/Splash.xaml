@@ -9,6 +9,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        ContentRendered="OnSplashContentRendered"
         Title="Splash" Height="200" Width="290">
 
     <Window.Background>

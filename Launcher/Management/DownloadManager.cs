@@ -1,11 +1,11 @@
-﻿using Dark_Launcher.Management.Interfaces;
+﻿using Launcher.Interfaces;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 
-namespace Dark_Launcher.Management
+namespace Launcher.Management
 {
     /// <summary>
     /// Download manager class
@@ -19,7 +19,7 @@ namespace Dark_Launcher.Management
         /// <param name="filePath">File path.</param>
         /// <param name="downloadCompletedCallback">Download completed cabllback.</param>
         /// <param name="downloadProgressChangedCallback">Download progress callback.</param>
-        public void DownloadFile(string url, string filePath, AsyncCompletedEventHandler downloadCompletedCallback, DownloadProgressChangedEventHandler downloadProgressChangedCallback = null)
+        public void DownloadFileAsync(string url, string filePath, AsyncCompletedEventHandler downloadCompletedCallback, DownloadProgressChangedEventHandler downloadProgressChangedCallback = null)
         {
             if (!string.IsNullOrEmpty(url) && !string.IsNullOrEmpty(filePath))
             {
@@ -80,38 +80,6 @@ namespace Dark_Launcher.Management
             else
             {
                 LogManager.WriteLog("Error on download string. Url is empty.");
-            }
-        }
-
-        public static bool ValidateFile(AsyncCompletedEventArgs e)
-        {
-            if (e.Error != null || e.Cancelled)
-            {
-#if DEBUG
-                Debug.Print(e.Error.ToString());
-                //MessageBox.Show(e.Error.ToString());
-#endif
-                return false;
-            }
-            return true;
-        }
-
-        public static bool CheckForInternetConnection(string serverToPing)
-        {
-            try
-            {
-                using (var client = new WebClient())
-                {
-                    using (var stream = client.OpenRead(serverToPing))
-                    {
-                        return true;
-                    }
-                }
-            }
-            catch (Exception er)
-            {
-                Debug.Print(er.Message);
-                return false;
             }
         }
     }
