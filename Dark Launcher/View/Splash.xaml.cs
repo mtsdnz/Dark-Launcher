@@ -1,4 +1,5 @@
 ﻿using Dark_Launcher.Management;
+using System;
 using System.Windows;
 namespace Dark_Launcher.View
 {
@@ -10,9 +11,12 @@ namespace Dark_Launcher.View
         public Splash()
         {
             InitializeComponent();
+        }
+
+        public void OnSplashContentRendered(object sender, EventArgs e)
+        {
             LauncherInitializer initializer = new LauncherInitializer();
             OpenForm();
-            
         }
 
         private void OpenForm()
@@ -21,11 +25,6 @@ namespace Dark_Launcher.View
             main.Show();
 
             this.Close();
-        }
-
-        private void LoadConfigurations()
-        {
-
         }
     }
 }

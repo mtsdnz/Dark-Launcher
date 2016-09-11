@@ -15,6 +15,6 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Updating launcher, please wait..." HorizontalAlignment="Center"  VerticalAlignment="Center"/>
-        <ProgressBar Grid.Row="1" Width="400" Height="25"/>
+        <ProgressBar Name="UpdaterProgress" Value="{Binding UpdaterProgressBar}" Minimum="0" Maximum="100" Grid.Row="1" Width="400" Height="25"/>
     </Grid>
 </Window>

@@ -25,7 +25,7 @@
             <Image Source="pack://application:,,,/Resources/Images/logo.jpg" Width="290" Height="200" HorizontalAlignment="Center" VerticalAlignment="Top"></Image>
 
             <!-- CLOSE BUTTON -->
-            <Button x:Name="CloseButton" Style="{StaticResource sCloseButton}" HorizontalAlignment="Right" Margin="0,144,10,396" RenderTransformOrigin="0.275,-3.158"></Button>
+            <Button x:Name="CloseButton" Command="{Binding CloseCommand}" Style="{StaticResource sCloseButton}" HorizontalAlignment="Right" Margin="0,144,10,396" RenderTransformOrigin="0.275,-3.158"></Button>
 
             <!-- LAUNCHER TITLE -->
             <Grid VerticalAlignment="Top" HorizontalAlignment="Left">

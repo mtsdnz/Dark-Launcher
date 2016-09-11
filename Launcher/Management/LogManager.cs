@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
-namespace Dark_Launcher.Management
+namespace Launcher.Management
 {
     public static class LogManager
     {
@@ -22,7 +23,11 @@ namespace Dark_Launcher.Management
 
         public static void WriteLog(string error, LogType logType = LogType.ERROR)
         {
-            writeOnFile(string.Format("[{0}] <{1}>: {2}", DateTime.Now, logType, error));
+            string errorLog = string.Format("[{0}] <{1}>: {2}", DateTime.Now, logType, error);
+            writeOnFile(errorLog);
+#if DEBUG
+            Debug.Print(errorLog);
+#endif
         }
 
         private static void writeOnFile(string stringToWrite)

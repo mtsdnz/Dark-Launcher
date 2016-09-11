@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Launcher.SharedConstants;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Launcher.Cryptography
 {
-    class LauncherAES
+    public class LauncherAES
     {
         private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("tu89geji340t89u2");
-        private int keySize = 256;
+        private int keySize = LauncherSharedConstants.AESKeySize;
+
         public string Decrypt(string text, string key)
         {
             byte[] cipherTextBytes = Convert.FromBase64String(text);
