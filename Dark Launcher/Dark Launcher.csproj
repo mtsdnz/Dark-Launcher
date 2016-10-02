@@ -91,7 +91,7 @@
     <Compile Include="Management\LauncherInitializer.cs" />
     <Compile Include="Management\LauncherManager.cs" />
     <Compile Include="Model\ViewModelBase.cs" />
-    <Compile Include="Settings\LauncherSettings.cs" />
+    <Compile Include="Settings\LauncherData.cs" />
     <Compile Include="ViewModel\SplashViewModel.cs" />
     <Compile Include="View\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
@@ -200,6 +200,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LauncherSettings\LauncherSettings.csproj">
+      <Project>{a1a9ec09-797a-4e12-91b5-639c49dba972}</Project>
+      <Name>LauncherSettings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Dark_Launcher.Settings
 {
-    public static class LauncherSettings
+    public static class LauncherData
     {
         /// <summary>
         /// The current launcher version

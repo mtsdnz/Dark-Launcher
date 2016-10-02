@@ -63,7 +63,7 @@ namespace Dark_Launcher.Management
                 FTPSettings.XMLNewsURL = newsNode.SelectSingleNode("xmlNewsUrl").InnerText;
 
 
-                LauncherSettings.IsOnMaintenance = bool.Parse(internalConfigsNode.SelectSingleNode("maintenance").InnerText);
+                LauncherData.IsOnMaintenance = bool.Parse(internalConfigsNode.SelectSingleNode("maintenance").InnerText);
 
                 if (!HasLoadedAllInternalConfigs(FTPSharedSettings.LauncherVersion, FTPSharedSettings.UpdaterURL, FTPSettings.ClientMirrorURL, FTPSettings.FileListURL, FTPSettings.ForumURL, FTPSettings.XMLNewsURL))
                 {

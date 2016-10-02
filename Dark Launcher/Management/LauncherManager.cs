@@ -19,7 +19,7 @@ namespace Dark_Launcher.Management
         {
             try
             {
-                if (LauncherSettings.IsOutdatedVersion)
+                if (LauncherData.IsOutdatedVersion)
                 {
                     try
                     {

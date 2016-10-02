@@ -1,20 +1,27 @@
 ﻿using Dark_Launcher.Constants;
 using Dark_Launcher.Settings;
+using LauncherSettings;
 using Launcher.Management;
 using Launcher.SharedConstants;
 using System;
 using System.Diagnostics;
 using System.Windows;
+using LauncherSettings.Base;
 
 namespace Dark_Launcher.Management
 {
     internal class LauncherInitializer
     {
         LauncherManager launcherManager;
+        SettingsManager settingsManager;
+
         public LauncherInitializer()
         {
             try
             {
+                settingsManager = new SettingsManager();
+                settingsManager.LoadSettings();
+
                 launcherManager = new LauncherManager();
                 loadLanguage();
 
