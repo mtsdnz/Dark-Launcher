@@ -33,6 +33,11 @@ namespace Launcher.Management
             return doc.SelectNodes(nodePath);
         }
 
+        public void saveFile(string fileName)
+        {
+            doc.Save(fileName);
+        }
+
     }
 
 }

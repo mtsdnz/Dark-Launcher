@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LauncherSettings.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,8 @@ namespace LauncherSettings
     public partial class Form1 : Form
     {
 
+        SettingsManager settingsManager;
+
         public Form1()
         {
             InitializeComponent();
@@ -20,24 +23,65 @@ namespace LauncherSettings
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-        }
-        private void chkAudio_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            for (int ix = 0; ix < chkAudio.Items.Count; ++ix)
-                if (ix != e.Index) chkAudio.SetItemChecked(ix, false);
+            settingsManager = new SettingsManager();
+#if DEBUG
+            settingsManager.LoadSettings();
+#endif
+
+            setButtonsOnLoad(pnlAudio, settingsManager.Audio);
+            setButtonsOnLoad(pnlGUI, settingsManager.GUI);
+            setButtonsOnLoad(pnlText, settingsManager.Text);
+            chkClient.Checked = isClientChecked();
         }
 
-        private void chkText_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            for (int ix = 0; ix < chkText.Items.Count; ++ix)
-                if (ix != e.Index) chkText.SetItemChecked(ix, false);
-        }
+            var audioChecked = pnlAudio.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            var textChecked = pnlText.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
+            var guiChecked = pnlGUI.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked).Text;
 
-        private void chkGUI_ItemCheck(object sender, ItemCheckEventArgs e)
+            settingsManager.GUI = getLanguageOptionById(guiChecked);
+            settingsManager.Text = getLanguageOptionById(textChecked);
+            settingsManager.Audio = getLanguageOptionById(audioChecked);
+            settingsManager.Client = getLanguageOptionById(chkClient);
+
+
+            settingsManager.saveToXML("gui", settingsManager.GUI.ToString());
+            settingsManager.saveToXML("text", settingsManager.Text.ToString());
+            settingsManager.saveToXML("audio", settingsManager.Audio.ToString());
+            settingsManager.saveToXML("client", settingsManager.Client.ToString());
+
+        }
+        public int getLanguageOptionById(CheckBox chk)
         {
-            for (int ix = 0; ix < chkGUI.Items.Count; ++ix)
-                if (ix != e.Index) chkGUI.SetItemChecked(ix, false);
+            if(chk.Checked)
+            {
+                return 1;
+            }else
+            {
+                return 0;
+            }
+        }
+        public Boolean isClientChecked()
+        {
+            if (settingsManager.Client == 1) return true;
+            return false;
+        }
+        public int getLanguageOptionById(String name)
+        {
+            if (name.Equals("Português"))
+            {
+                return 0;
+            }else if (name.Equals("English"))
+            {
+                return 1;
+            }
+            return 1;
+        }
+        public void setButtonsOnLoad(Panel pnl, int id)
+        {
+            RadioButton rb = pnl.Controls[id] as RadioButton;
+            rb.Checked = true;
         }
     }
 }
