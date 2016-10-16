@@ -25,18 +25,16 @@ namespace FileListGenerator
         private void btnSelectFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dg = new FolderBrowserDialog();
-            if (dg.ShowDialog() == DialogResult.OK)
-            {
-                txtClientFolder.Text = dg.SelectedPath;
-                addFileToolStripMenuItem.Enabled = true;
-                createToolStripMenuItem.Enabled = true;
-            }
+            if (dg.ShowDialog() != DialogResult.OK) return;
+
+            txtClientFolder.Text = dg.SelectedPath;
+            addFileToolStripMenuItem.Enabled = true;
+            createToolStripMenuItem.Enabled = true;
         }
 
         private void addFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = txtClientFolder.Text;
+            OpenFileDialog ofd = new OpenFileDialog {InitialDirectory = txtClientFolder.Text};
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -68,11 +66,9 @@ namespace FileListGenerator
             try
             {
                 string path = Path.Combine(Environment.CurrentDirectory, "Important.list");
-                if (File.Exists(path))
-                {
-                    string[] flist = File.ReadAllLines(path);
-                    flist.ToList().ForEach(f => listBoxImportantFiles.Items.Add(f));
-                }
+                if (!File.Exists(path)) return;
+                string[] flist = File.ReadAllLines(path);
+                flist.ToList().ForEach(f => listBoxImportantFiles.Items.Add(f));
             }
             catch (Exception ex)
             {
@@ -89,48 +85,50 @@ namespace FileListGenerator
         {
             try
             {
-                if (Directory.Exists(pathClient))
+                if (!Directory.Exists(pathClient)) return;
+
+                XMLCreatorManager xm = new XMLCreatorManager();
+                xm.CreateDocument("Files");
+                string[] fileListDir = Directory.GetFiles(pathClient, "*.*", SearchOption.AllDirectories);
+                int totalFiles = fileListDir.Length;
+
+                xm.CreateComment($"Total Client Files: {totalFiles}, Created on {DateTime.Now}", xm.Doc.DocumentElement);
+
+                List<string> importantFiles = listBoxImportantFiles.Items.Cast<string>().ToList();//.Select(i => i.Text).ToList();
+                for (int i = 0; i < totalFiles; i++)
                 {
-                    XMLCreatorManager xm = new XMLCreatorManager();
-                    xm.CreateDocument("Files");
-                    string[] fileListDir = Directory.GetFiles(pathClient, "*.*", SearchOption.AllDirectories);
-                    int totalFiles = fileListDir.Length;
-
-                    xm.CreateComment($"Total Client Files: {totalFiles}, Created on {DateTime.Now}", xm.Doc.DocumentElement);
-
-                    List<string> importantFiles = listBoxImportantFiles.Items.Cast<string>().ToList();//.Select(i => i.Text).ToList();
-                    for (int i = 0; i < totalFiles; i++)
+                    var i1 = i;
+                    await Task.Run(() =>
                     {
-                        await Task.Run(() =>
+                        string filePath = fileListDir[i1];
+                        string fileClientPath = filePath.Replace(pathClient, string.Empty);
+
+                        FileInfo file = new FileInfo(filePath);
+
+                        if (fileClientPath[0] == Path.DirectorySeparatorChar)
+                            fileClientPath = fileClientPath.Substring(1);
+                        if (fileClientPath[0] == Path.AltDirectorySeparatorChar)
+                            fileClientPath = fileClientPath.Substring(1);
+
+                        XmlElement fileElement = xm.CreateElement("File");
+                        fileElement.InnerText = fileClientPath;
+
+                        if (importantFiles.Contains(fileClientPath))
+                            xm.CreateAttribute(fileElement, "Verify", true);
+
+                        xm.CreateAttribute(fileElement, "MD5", MD5Helper.GetChecksumBuffered(filePath));
+
+                        xm.CreateAttribute(fileElement, "Size", file.Length.ToString());
+
+                        this.Invoke(new MethodInvoker(delegate
                         {
-                            string filePath = fileListDir[i];
-                            string fileClientPath = filePath.Replace(pathClient, string.Empty);
-
-                            FileInfo file = new FileInfo(filePath);
-
-                            if (fileClientPath[0] == Path.DirectorySeparatorChar)
-                                fileClientPath = fileClientPath.Substring(1);
-                            if (fileClientPath[0] == Path.AltDirectorySeparatorChar)
-                                fileClientPath = fileClientPath.Substring(1);
-
-                            XmlElement fileElement = xm.CreateElement("File");
-                            fileElement.InnerText = fileClientPath;
-
-                            if (importantFiles.Contains(fileClientPath))
-                                xm.CreateAttribute(fileElement, "MD5", MD5Helper.GetChecksumBuffered(filePath));
-
-                            xm.CreateAttribute(fileElement, "Size", file.Length.ToString());
-
-                            this.Invoke(new MethodInvoker(delegate
-                            {
-                                progressStatus.Value = (i + 1) * 100 / totalFiles;
-                                lblStatus.Text = $"Stauts: Parsing file {file.Name}";
-                            }));
-                        });
-                    }
-                    lblStatus.Text = "Status: Completed";
-                    xm.SaveXML(Path.Combine(Environment.CurrentDirectory, "FileList.xml"));
+                            progressStatus.Value = (i1 + 1) * 100 / totalFiles;
+                            lblStatus.Text = $"Status: Parsing file {file.Name} ({i1}/{totalFiles}) - ({progressStatus.Value}%)";
+                        }));
+                    });
                 }
+                lblStatus.Text = "Status: Completed";
+                xm.SaveXml(Path.Combine(Environment.CurrentDirectory, "FileList.xml"));
             } catch (Exception e)
             {
                 LogManager.WriteLog("Exception on create file list: " + e.Message);

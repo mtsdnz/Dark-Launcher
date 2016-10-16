@@ -15,7 +15,6 @@ namespace Dark_Launcher
         {
             InitializeComponent();
             var launcherViewModel = new LauncherViewModel();
-            launcherViewModel.UIDispatcher = Dispatcher;
             DataContext = launcherViewModel;
         }
 

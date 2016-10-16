@@ -11,7 +11,7 @@ using Launcher.Helpers;
 
 namespace Dark_Launcher.Management
 {
-    internal class LauncherConfigurationsManager
+    internal sealed class LauncherConfigurationsManager
     {
         public delegate void OnConfigurationsLoad();
         public event OnConfigurationsLoad OnConfigurationsLoaded; 
@@ -19,57 +19,49 @@ namespace Dark_Launcher.Management
         public void LoadInternalConfigs()
         {
             DownloadManager dm = new DownloadManager();
-            //TODO: Change to TEMP folder!
-            //Path.TempFolder()
-            var filePath = Path.Combine(Environment.CurrentDirectory, "LauncherInternalConfig.xml");
-            dm.DownloadFileAsync(LauncherSharedConstants.InternalConfigFileURL, LauncherSharedConstants.InternalConfigFilePath, onDownloadInternalConfigFileCompleted);
+            dm.DownloadFileAsync(LauncherSharedConstants.InternalConfigFileUrl, LauncherSharedConstants.InternalConfigFilePath, OnDownloadInternalConfigFileCompleted);
             
         }
 
-        private void onDownloadInternalConfigFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private void OnDownloadInternalConfigFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (NetworkHelper.ValidateDownloadedFile(e))
-            {
-                //TODO: Remove this on final version
-#if DEBUG
-                Debug.Print("filepath(user state) -> " + (string)e.UserState);
-#endif
-                LoadInternalConfigsXml((string)e.UserState);
-            }
+                LoadInternalConfigsFromXml((string)e.UserState);
             else
-            {
-#if DEBUG
-                Debug.Print("error on download file!");
-#endif
-            }
+                LogManager.WriteLog("Error on download internal config file: " + e.Error);
         }
 
-        public void LoadInternalConfigsXml(string xmlFilePath)
+        internal void LoadInternalConfigsFromXml(string xmlFilePath)
         {
             try
             {
-                XMLManager xmlManager = new XMLManager();
+                XmlManager xmlManager = new XmlManager();
                 xmlManager.InitializeFromFile(xmlFilePath);
                 
                 XmlNode internalConfigsNode = xmlManager.GetNode("internalConfigs");
-                FTPSharedSettings.LauncherVersion = internalConfigsNode.SelectSingleNode("version").InnerText;
-                FTPSharedSettings.UpdaterURL = internalConfigsNode.SelectSingleNode("launcherUpdateLink").InnerText;
-                FTPSettings.ClientMirrorURL = internalConfigsNode.SelectSingleNode("clientMirror").InnerText;
-                FTPSettings.FileListURL = internalConfigsNode.SelectSingleNode("fileListURL").InnerText;
+                FTPSharedSettings.LauncherVersion = internalConfigsNode.SelectSingleNode("version")?.InnerText;
+                FTPSharedSettings.UpdaterURL = internalConfigsNode.SelectSingleNode("launcherUpdateLink")?.InnerText;
+                FtpSettings.ClientMirrorUrl = internalConfigsNode.SelectSingleNode("clientMirror")?.InnerText;
+                FtpSettings.FileListUrl = internalConfigsNode.SelectSingleNode("fileListURL")?.InnerText;
+                FtpSettings.BlackListUrl = internalConfigsNode.SelectSingleNode("blackListURL").InnerText;
+                
+                XmlNode newsNode = internalConfigsNode.SelectSingleNode("news");
+                FtpSettings.ForumUrl = newsNode.SelectSingleNode("forumURL").InnerText;
+                FtpSettings.XmlNewsUrl = newsNode.SelectSingleNode("xmlNewsUrl")?.InnerText;
+                //optional!
                 
 
-                XmlNode newsNode = internalConfigsNode.SelectSingleNode("news");
-                FTPSettings.ForumURL = newsNode.SelectSingleNode("forumURL").InnerText;
-                FTPSettings.XMLNewsURL = newsNode.SelectSingleNode("xmlNewsUrl").InnerText;
-
+                LauncherSettings.ShowNews = bool.Parse(newsNode.SelectSingleNode("showNews").InnerText);
 
                 LauncherSettings.IsOnMaintenance = bool.Parse(internalConfigsNode.SelectSingleNode("maintenance").InnerText);
+                LauncherSettings.ShowSpeed = bool.Parse(internalConfigsNode.SelectSingleNode("showSpeed").InnerText);
+                
 
-                if (!HasLoadedAllInternalConfigs(FTPSharedSettings.LauncherVersion, FTPSharedSettings.UpdaterURL, FTPSettings.ClientMirrorURL, FTPSettings.FileListURL, FTPSettings.ForumURL, FTPSettings.XMLNewsURL))
+                if (!HasLoadedAllInternalConfigs(FTPSharedSettings.LauncherVersion, FTPSharedSettings.UpdaterURL, FtpSettings.ClientMirrorUrl, FtpSettings.FileListUrl, FtpSettings.ForumUrl, FtpSettings.XmlNewsUrl))
                 {
                     LogManager.WriteLog("Not all internal configs was loaded correctly.");
                 }
-                OnConfigurationsLoaded();
+                OnConfigurationsLoaded?.Invoke();
 
 #if DEBUG
                 Debug.Print("Internal configs loaded sucessfully");
@@ -85,15 +77,13 @@ namespace Dark_Launcher.Management
 
         }
 
-        private bool HasLoadedAllInternalConfigs(params string[] strs)
+        private static bool HasLoadedAllInternalConfigs(params string[] strs)
         {
-            foreach (string str in strs)
+            foreach (var str in strs)
             {
-                if (str == string.Empty || str == null)
-                {
-                    LogManager.WriteLog($"Internal config {str} is empty or null. ", LogManager.LogType.WARN);
-                    return false;
-                }
+                if (!string.IsNullOrEmpty(str)) continue;
+                LogManager.WriteLog($"Internal config {str} is empty or null. ", LogManager.LogType.Warn);
+                return false;
             }
             return true;
         }

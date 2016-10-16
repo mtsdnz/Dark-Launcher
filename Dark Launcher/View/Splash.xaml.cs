@@ -8,23 +8,26 @@ namespace Dark_Launcher.View
     /// </summary>
     public partial class Splash : Window
     {
+        public static Splash SplashInstance;
         public Splash()
         {
+            SplashInstance = this;
             InitializeComponent();
         }
 
         public void OnSplashContentRendered(object sender, EventArgs e)
         {
             LauncherInitializer initializer = new LauncherInitializer();
-            OpenForm();
+            initializer.InitializerLauncher();
+            initializer.OnLauncherInitializerCallback += OpenForm;
         }
 
-        private void OpenForm()
+        public void OpenForm()
         {
-            LauncherMainWindow main = new LauncherMainWindow();
-            main.Show();
+            var mainWindow = new LauncherMainWindow();
+            mainWindow.Show();
 
-            this.Close();
+            Close();
         }
     }
 }

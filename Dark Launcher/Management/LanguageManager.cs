@@ -7,29 +7,40 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml;
+using Dark_Launcher.Settings;
 
 namespace Dark_Launcher.Management
 {
-    internal class LanguageManager
+    internal sealed class LanguageManager
     {
-        public List<Language> Languages = new List<Language>();
-        public static Language CurrentLanguage;
+        internal List<Language> Languages = new List<Language>();
+        internal static Language CurrentLanguage;
 
-        public void LoadLanguages()
+        internal void LoadLanguages()
         {
             try
             {
-                XMLManager xml = new XMLManager();
+                XmlManager xml = new XmlManager();
                 xml.InitializeFromFile("LauncherLanguage.xml");
 
-                XmlNodeList nodeList = xml.GetNodes("languages/language");
+                XmlNode languagesNode = xml.GetNode("languages");
+
+                XmlNodeList nodeList = languagesNode.SelectNodes("language");// xml.GetNodes("languages/language");
+
+                if (!languagesNode.HasAttribute("currentLanguageId"))
+                    LauncherSettings.HasDefaultLanguage = false;
+                else
+                    LauncherSettings.DefaultLanguageId = languagesNode.ParseIntAttribute("currentLanguageId");
+
                 for (int i = 0; i < nodeList.Count; i++)
                 {
                     XmlNode node = nodeList[i];
-                    Language language = new Language();
-                    language.Name = node.SelectSingleNode("name").InnerText;
-                    language.FileName = node.SelectSingleNode("fileName").InnerText;
-                    language.Id = node.ParseIntAttribute("id");
+                    Language language = new Language
+                    {
+                        Name = node.SelectSingleNode("name")?.InnerText,
+                        FileName = node.SelectSingleNode("fileName")?.InnerText,
+                        Id = node.ParseIntAttribute("id")
+                    };
                     Languages.Add(language);
                 }
 #if DEBUG
@@ -42,15 +53,15 @@ namespace Dark_Launcher.Management
             }
         }
 
-        public Language LoadLanguageStrings(int languageID)
+        internal Language LoadLanguageStrings(int languageId)
         {
             try
             {
-                Language lang = Languages.FirstOrDefault(l => l.Id == languageID);
+                Language lang = Languages.FirstOrDefault(l => l.Id == languageId);
                 if (lang == null)
                     throw new NullReferenceException("language");
 
-                XMLManager xml = new XMLManager();
+                XmlManager xml = new XmlManager();
                 xml.InitializeFromFile(string.Format(LauncherConstants.LanguagesStringsFilePath, lang.FileName));
 
                 XmlNodeList languageNodes = xml.GetNodes("language/strings/string");
@@ -72,9 +83,19 @@ namespace Dark_Launcher.Management
             }
         }
 
-        public static string GetString(int stringId)
+        internal static string GetString(int stringId)
         {
-            return CurrentLanguage.Strings[stringId];
+            try
+            {
+                return CurrentLanguage.Strings[stringId];
+            }
+            catch (Exception)
+            {
+                LogManager.WriteLog("Could not load the string at index: " + stringId);
+
+                return string.Empty;
+            }
+            
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Launcher.Management
     public class DownloadManager : IDownload
     {
         /// <summary>
-        /// Downloads a file.
+        /// Download a file async.
         /// </summary>
         /// <param name="url">File URL.</param>
         /// <param name="filePath">File path.</param>
@@ -25,17 +25,18 @@ namespace Launcher.Management
             {
                 try
                 {
-                    using (WebClient wb = new WebClient())
+                    using (var wb = new WebClient())
                     {
                         if (File.Exists(filePath))
                             File.Delete(filePath);
 
                         var fileDirectory = Path.GetDirectoryName(filePath);
                         if (!Directory.Exists(fileDirectory))
-                            Directory.CreateDirectory(fileDirectory);
+                            if (fileDirectory != null) Directory.CreateDirectory(fileDirectory);
 
                         wb.Proxy = null;
-                        wb.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache);
+                        wb.CachePolicy =
+                            new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache);
                         WebRequest.DefaultWebProxy = null;
 
                         wb.DownloadFileCompleted += downloadCompletedCallback;

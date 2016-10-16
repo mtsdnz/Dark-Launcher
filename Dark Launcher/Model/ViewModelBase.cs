@@ -4,27 +4,30 @@ using System.Linq;
 
 namespace Dark_Launcher.Model
 {
-    public abstract class ViewModelBase : NotifiableBase
+    internal abstract class ViewModelBase : NotifiableBase
     {
-        private static List<ViewModelBase> loadedViewModels;
+        private static readonly List<ViewModelBase> LoadedViewModels;
 
         static ViewModelBase()
         {
-            loadedViewModels = new List<ViewModelBase>();
+            LoadedViewModels = new List<ViewModelBase>();
         }
 
-        public ViewModelBase()
+        protected ViewModelBase()
         {
-            lock (loadedViewModels)
+            lock (LoadedViewModels)
             {
-                loadedViewModels.RemoveAll(vm => vm.GetType() == GetType());
-                loadedViewModels.Add(this);
+                LoadedViewModels.RemoveAll(vm => vm.GetType() == GetType());
+                LoadedViewModels.Add(this);
             }
         }
 
         public static T InstanceOf<T>() where T : ViewModelBase
         {
-            return (T)loadedViewModels.FirstOrDefault(vm => vm.GetType() == typeof(T)) ?? Activator.CreateInstance<T>();
+            lock (LoadedViewModels)
+            {
+                return (T)LoadedViewModels.FirstOrDefault(vm => vm.GetType() == typeof(T)) ?? Activator.CreateInstance<T>();
+            }
         }
     }
 }

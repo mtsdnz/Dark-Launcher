@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using Launcher.ExtensionMethods;
 
 namespace Launcher.Helpers
 {
@@ -16,16 +17,23 @@ namespace Launcher.Helpers
         /// <returns></returns>
         public static bool ValidateDownloadedFile(AsyncCompletedEventArgs e, bool showLog = false)
         {
-            if (e.Error != null || e.Cancelled)
-            {
+            if (e.Error == null && !e.Cancelled) return true;
 #if DEBUG
-                Debug.Print(e.Error.ToString());
+            Debug.Print(e.Error.StackTrace);
 #endif
-                if(showLog)
-                    LogManager.WriteLog("Error on download file: " + e.Error);
-                return false;
-            }
-            return true;
+            if(showLog)
+                LogManager.WriteLog("Error on download file: " + e.Error);
+            return false;
+        }
+
+        public static double GetDownloadSpeed(long bytesReceived, double timeLapsed, out string text)
+        {
+            double asKb = Math.Round(bytesReceived/(double)LongExtension.OneKb / timeLapsed, 0);
+            double asMb = Math.Round(bytesReceived/(double)(LongExtension.OneKb * LongExtension.OneKb) / timeLapsed, 2);
+            bool isKb = asKb <= 1024;
+            text = isKb ? "Kb/s" : "Mb/s";
+            asKb = asKb < 0 ? 0 : asKb;
+            return isKb ? asKb : asMb;
         }
 
         public static bool CheckForInternetConnection(string serverToPing)

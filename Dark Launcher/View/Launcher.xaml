@@ -36,10 +36,10 @@
         </Grid>
 
         <!-- LAUNCHER MIDDLE GRID -->
-        <Grid VerticalAlignment="Center" Height="270" Margin="0,70,500,0">
+        <Grid VerticalAlignment="Center" Height="270" Margin="0,70,450,0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="160"/>
+                <RowDefinition Height="46"/>
+                <RowDefinition Height="150" />
                 <RowDefinition Height="24"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -53,7 +53,7 @@
                                 <!-- Imagens(1,2,3,4,5) -->
                                 <TextBlock Margin="5,3">
                                         <TextBlock>
-                                            <!-- Conteúdo[Texto] da noticia -->
+                                            <!-- Content[text] of news -->
                                             <Hyperlink FontFamily="Arial" NavigateUri="{Binding Url}" Foreground="White" FontSize="13" RequestNavigate="Hyperlink_RequestNavigate" FontWeight="Bold" TextDecorations="none" >
                                                 <TextBlock Text="{Binding Date}" Foreground="#26B4EA"/>
                                                 <TextBlock Text="{Binding Title}" />
@@ -68,11 +68,11 @@
 
 
             <!-- last news textblock-->
-            <TextBlock Text="{Binding LastNewsStr}" Margin="10,0" Style="{StaticResource LastNewsText}"></TextBlock>
+            <TextBlock Text="{Binding LastNewsStr}" Margin="10,5" Style="{StaticResource LastNewsText}"></TextBlock>
 
             <!-- see more hyperlink -->
             <TextBlock Grid.Row="2" Margin="20,0" Style="{StaticResource ServerStatus}" Foreground="White"  VerticalAlignment="Center">
-                <Hyperlink NavigateUri="http://forum.gchistory.net/index.php?/forum/8-not%C3%ADcias-e-novidades/" FontSize="14" FontFamily="Arial" TextDecorations="none" FontWeight="DemiBold" Foreground="White">
+                <Hyperlink NavigateUri="{Binding SeeMoreUrl}" FontSize="14" FontFamily="Arial" TextDecorations="none" FontWeight="DemiBold" Foreground="White">
                     <TextBlock Text="{Binding SeeMoreStr}"></TextBlock>
                 </Hyperlink>
             </TextBlock>
@@ -103,19 +103,19 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="560"/>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="520"/>
             </Grid.ColumnDefinitions>
 
             <!--PROGRESS BAR FILE -->
             <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                <ProgressBar x:Name="FileProgress" Value="20.54" Margin="0,0" VerticalAlignment="Center" Height="25"/>
+                <ProgressBar x:Name="FileProgress" Value="{Binding CurrentFileProgressbarValue}" Margin="0,0" VerticalAlignment="Center" Height="25"/>
                 <TextBlock Text="{Binding ElementName=FileProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23"/>
             </Grid>
 
             <!--PROGRESS BAR TOTAL -->
             <Grid Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
-                <ProgressBar x:Name="TotalProgress" Value="1" Margin="0,10" VerticalAlignment="Center" Height="25"/>
+                <ProgressBar x:Name="TotalProgress" Value="{Binding TotalFilesProgressbarValue}" Margin="0,10" VerticalAlignment="Center" Height="25"/>
                 <TextBlock Text="{Binding ElementName=TotalProgress, Path=Value, StringFormat={}{0:0}%}" Style="{StaticResource ProgressBarText}" Height="23" Margin="0,0"/>
             </Grid>
 
@@ -126,11 +126,11 @@
             <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource DefaultText}" Text="{Binding TotalStr}" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,10"/>
 
             <!-- PROGRESS TEXT -->
-            <TextBlock Grid.Column="1"  Grid.Row="0" Style="{StaticResource DefaultText}" Text="{Binding CurrentTask}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10">
+            <TextBlock Grid.Column="1"  Grid.Row="0" Style="{StaticResource DefaultText}" Text="{Binding CurrentTask}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,0">
             </TextBlock>
         </Grid>
         
         <!-- PLAY BUTTON -->
-        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="3" Style="{StaticResource PlayButton}" Content="{Binding PlayButtonStr}"  IsEnabled="True" Margin="20,10" Command="{Binding PlayCommand}"/>
+        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="3" Style="{StaticResource PlayButton}" Content="{Binding PlayButtonStr}"  IsEnabled="{Binding PlayButtonEnabled}" Margin="40,13" Command="{Binding PlayCommand}"/>
     </Grid>
 </Window>

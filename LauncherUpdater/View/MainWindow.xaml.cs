@@ -16,8 +16,7 @@ namespace LauncherUpdater
         public MainWindow()
         {
             InitializeComponent();
-            var vm = new MainViewModel();
-            vm.UIDispatcher = Dispatcher;
+            var vm = new MainViewModel {UIDispatcher = Dispatcher};
             DataContext = vm;
             Loaded += vm.OnWindowLoaded;
         }

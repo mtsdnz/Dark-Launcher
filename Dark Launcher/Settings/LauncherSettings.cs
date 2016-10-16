@@ -1,14 +1,15 @@
 ﻿using Launcher.SharedConstants;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace Dark_Launcher.Settings
 {
-    public static class LauncherSettings
+    internal static class LauncherSettings
     {
         /// <summary>
         /// The current launcher version
         /// </summary>
-        public static string CurrentVersion
+        internal static string CurrentVersion
         {
             get
             {
@@ -21,7 +22,7 @@ namespace Dark_Launcher.Settings
         /// Is outdated version
         /// </summary>
         /// <returns><c>true</c>, if the launcher is outdated, <c>false</c> otherwise.</returns>
-        public static bool IsOutdatedVersion
+        internal static bool IsOutdatedVersion
         {
            get
             {
@@ -36,7 +37,20 @@ namespace Dark_Launcher.Settings
         /// Is on maintenance.
         /// </summary>
         /// <returns><c>true</c>, if the launcher is on maintenance, <c>false</c> otherwise.</returns>
-        public static bool IsOnMaintenance { get; set; }
+        internal static bool IsOnMaintenance { get; set; }
 
+        /// <summary>
+        /// Show speed when download a file?
+        /// </summary>
+        internal static bool ShowSpeed { get; set; }
+
+        /// <summary>
+        /// Show the news?
+        /// </summary>
+        internal static bool ShowNews { get; set; }
+
+        internal static bool HasDefaultLanguage { get; set; }
+
+        internal static int DefaultLanguageId { get; set; }
     }
 }

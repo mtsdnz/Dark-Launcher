@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography\LauncherAES.cs" />
+    <Compile Include="ExtensionMethods\LongExtension.cs" />
     <Compile Include="ExtensionMethods\XMLNodeExtensionMethods.cs" />
     <Compile Include="Helpers\MD5Helper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 namespace Dark_Launcher.Model
 {
-    public abstract class NotifiableBase : INotifyPropertyChanged
+    internal abstract class NotifiableBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

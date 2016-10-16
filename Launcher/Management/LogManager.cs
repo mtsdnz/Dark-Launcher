@@ -8,40 +8,38 @@ namespace Launcher.Management
     {
         public enum LogType
         {
-            WARN,
-            ERROR
+            Warn,
+            Error
         }
         public static void CreateLog(string path)
         {
-            if (!File.Exists(path))
-            {
-                Stream st = File.Create(path);
-                st.Flush();
-                st.Close();
-            }
+            if (File.Exists(path)) return;
+            Stream st = File.Create(path);
+            st.Flush();
+            st.Close();
         }
 
-        public static void WriteLog(string error, LogType logType = LogType.ERROR)
+        public static void WriteLog(string error, LogType logType = LogType.Error)
         {
-            string errorLog = string.Format("[{0}] <{1}>: {2}", DateTime.Now, logType, error);
-            writeOnFile(errorLog);
+            string errorLog = $"[{DateTime.Now}] <{logType}>: {error}";
+            WriteOnFile(errorLog);
 #if DEBUG
             Debug.Print(errorLog);
 #endif
         }
 
-        private static void writeOnFile(string stringToWrite)
+        private static void WriteOnFile(string stringToWrite)
         {
             try
             {
-                using (TextWriter Writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, "LauncherError.log")))
+                using (TextWriter writer = File.AppendText(Path.Combine(Environment.CurrentDirectory, "LauncherError.log")))
                 {
-                    Writer.WriteLine(stringToWrite);
+                    writer.WriteLine(stringToWrite);
                 }
             }
             catch
             {
-                throw new Exception("Write");
+                throw new ApplicationException();
             }
         }
     }

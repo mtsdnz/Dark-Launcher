@@ -25,13 +25,11 @@ namespace LauncherUpdater.ViewModel
 
         public MainViewModel()
         {
-            bool isRightParameter = (Environment.GetCommandLineArgs().Length > 1 && Environment.GetCommandLineArgs()[1] == LauncherSharedConstants.UpdaterExecuteParameter);
-            if (!isRightParameter)
-            {
-                if(File.Exists(Path.Combine(Environment.CurrentDirectory, LauncherSharedConstants.ExecutableName)))
-                    Process.Start(LauncherSharedConstants.ExecutableName);
-                Environment.Exit(1);
-            }
+            bool isRightParameter = Environment.GetCommandLineArgs().Length > 1 && Environment.GetCommandLineArgs()[1] == LauncherSharedConstants.UpdaterExecuteParameter;
+            if (isRightParameter) return;
+            if(File.Exists(Path.Combine(Environment.CurrentDirectory, LauncherSharedConstants.ExecutableName)))
+                Process.Start(LauncherSharedConstants.ExecutableName);
+            Environment.Exit(1);
         }
         public void OnWindowLoaded(object ob, RoutedEventArgs e)
         {

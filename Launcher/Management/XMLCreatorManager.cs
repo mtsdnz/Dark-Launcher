@@ -12,10 +12,7 @@ namespace Launcher.Management
         }
 
         private XmlElement _element;
-        public XmlElement XElement
-        {
-            get { return _element; }
-        }
+        public XmlElement XElement => _element;
 
         public void CreateDocument(string elementRootName)
         {
@@ -30,8 +27,7 @@ namespace Launcher.Management
 
         private void CreateCreditsComment(string name, XmlElement element)
         {
-            XmlComment comment;
-            comment = doc.CreateComment("\n    " + name + " Configurations. \n    Copyright © " + DateTime.Now.Year + " - DarkHero. \n");
+            var comment = doc.CreateComment("\n    " + name + " Configurations. \n    Copyright © " + DateTime.Now.Year + " - DarkHero. \n");
             doc.InsertBefore(comment, element);
         }
 
@@ -66,7 +62,7 @@ namespace Launcher.Management
             return element;
         }
 
-        public void SaveXML(string path)
+        public void SaveXml(string path)
         {
             doc.Save(path);
         }

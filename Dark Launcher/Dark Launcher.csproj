@@ -90,9 +90,14 @@
     <Compile Include="Management\LauncherConfigurationsManager.cs" />
     <Compile Include="Management\LauncherInitializer.cs" />
     <Compile Include="Management\LauncherManager.cs" />
+    <Compile Include="Management\LauncherNewsManager.cs" />
     <Compile Include="Model\ViewModelBase.cs" />
     <Compile Include="Settings\LauncherSettings.cs" />
+    <Compile Include="ViewModel\LanguageSelectorViewModel.cs" />
     <Compile Include="ViewModel\SplashViewModel.cs" />
+    <Compile Include="View\LanguageSelector.xaml.cs">
+      <DependentUpon>LanguageSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -111,6 +116,10 @@
     <Page Include="Themes\History\ProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LanguageSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Launcher.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +161,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">

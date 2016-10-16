@@ -1,24 +1,32 @@
 ﻿using Dark_Launcher.Constants;
-using Dark_Launcher.Settings;
 using Launcher.Management;
-using Launcher.SharedConstants;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Windows;
+using Dark_Launcher.Settings;
 
 namespace Dark_Launcher.Management
 {
-    internal class LauncherInitializer
+    internal sealed class LauncherInitializer
     {
-        LauncherManager launcherManager;
-        public LauncherInitializer()
+        private readonly LauncherManager _launcherManager;
+
+        internal delegate void OnLauncherInitializerDelegate();
+
+        internal OnLauncherInitializerDelegate OnLauncherInitializerCallback;
+
+        internal LauncherInitializer()
+        {
+            _launcherManager = new LauncherManager();
+        }
+
+        internal void InitializerLauncher()
         {
             try
             {
-                launcherManager = new LauncherManager();
-                loadLanguage();
+                LoadLanguage();
 
-                if (launcherManager.LauncherIsRunning)
+                if (_launcherManager.LauncherIsRunning)
                 {
                     MessageBox.Show(LanguageManager.GetString(7), "Launcher already running!", MessageBoxButton.OK, MessageBoxImage.Stop);
                     Environment.Exit(0);
@@ -27,6 +35,7 @@ namespace Dark_Launcher.Management
                 var configs = new LauncherConfigurationsManager();
                 configs.LoadInternalConfigs();
                 configs.OnConfigurationsLoaded += OnLoadConfigurationsComplete;
+
             }
             catch (Exception e)
             {
@@ -36,14 +45,30 @@ namespace Dark_Launcher.Management
 
         private void OnLoadConfigurationsComplete()
         {
-            launcherManager.ValidateLauncherVersion();
+            _launcherManager.ValidateLauncherVersion();
+
+            LauncherFileManager launcherFileManager = new LauncherFileManager();
+            launcherFileManager.DownloadBlackList();
+            launcherFileManager.OnBadFilesLoadCompleteCallback += OnBadFilesDownloadCompleteCallback;
+
+            OnLauncherInitializerCallback?.Invoke();
         }
 
-        private void loadLanguage()
+        private static void OnBadFilesDownloadCompleteCallback(List<LauncherFileManager.BadFile> listBadFiles)
         {
-            LanguageManager languageManager = new LanguageManager();
+            LauncherFileManager.DeleteBadFiles(listBadFiles);
+        }
+
+        private static void LoadLanguage()
+        {
+            var languageManager = new LanguageManager();
             languageManager.LoadLanguages();
-            languageManager.LoadLanguageStrings(LauncherConstants.DefaultLanguageID);
+           // if (LauncherSettings.HasDefaultLanguage)
+                languageManager.LoadLanguageStrings(1);
+            //else
+            //{
+                //TODO: Colocar para o usuario selecionar a lingua
+           // }
         }
     }
 }

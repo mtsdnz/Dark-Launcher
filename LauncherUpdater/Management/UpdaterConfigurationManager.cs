@@ -1,7 +1,6 @@
 ﻿using Launcher.Helpers;
 using Launcher.Management;
 using Launcher.SharedConstants;
-using LauncherUpdater.ViewModel;
 using System;
 using System.ComponentModel;
 
@@ -14,17 +13,17 @@ namespace LauncherUpdater.Management
 
         public UpdaterConfigurationsManager()
         {
-            DownloadManager downloadManager = new DownloadManager();
-            downloadManager.DownloadFileAsync(LauncherSharedConstants.InternalConfigFileURL, LauncherSharedConstants.InternalConfigFilePath, onDownloadConfigurationsCompleted);
+            var downloadManager = new DownloadManager();
+            downloadManager.DownloadFileAsync(LauncherSharedConstants.InternalConfigFileUrl, LauncherSharedConstants.InternalConfigFilePath, OnDownloadConfigurationsCompleted);
 
         }
 
-        private void onDownloadConfigurationsCompleted(object sender, AsyncCompletedEventArgs e)
+        private void OnDownloadConfigurationsCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (NetworkHelper.ValidateDownloadedFile(e))
             {
-                loadInternalConfigurations((string)e.UserState);
-                OnConfigurationsLoaded();
+                LoadInternalConfigurations((string)e.UserState);
+                OnConfigurationsLoaded?.Invoke();
             }
             else
             {
@@ -32,21 +31,20 @@ namespace LauncherUpdater.Management
             }
         }
 
-        private void loadInternalConfigurations(string xmlFilePath)
+        private static void LoadInternalConfigurations(string xmlFilePath)
         {
             try
             {
-                XMLManager xm = new XMLManager();
+                XmlManager xm = new XmlManager();
                 xm.InitializeFromFile(xmlFilePath);
+                if (!string.IsNullOrEmpty(FTPSharedSettings.LauncherVersion) &&
+                    !string.IsNullOrEmpty(FTPSharedSettings.UpdaterURL)) return;
+                FTPSharedSettings.LauncherVersion = xm.GetNode("internalConfigs/version").InnerText;
+                FTPSharedSettings.UpdaterURL = xm.GetNode("internalConfigs/launcherUpdateLink").InnerText;
+
                 if (string.IsNullOrEmpty(FTPSharedSettings.LauncherVersion) || string.IsNullOrEmpty(FTPSharedSettings.UpdaterURL))
                 {
-                    FTPSharedSettings.LauncherVersion = xm.GetNode("internalConfigs/version").InnerText;
-                    FTPSharedSettings.UpdaterURL = xm.GetNode("internalConfigs/launcherUpdateLink").InnerText;
-
-                    if (string.IsNullOrEmpty(FTPSharedSettings.LauncherVersion) || string.IsNullOrEmpty(FTPSharedSettings.UpdaterURL))
-                    {
-                        LogManager.WriteLog($"Launcher version or updaterURL is null or empty. \n Version: {FTPSharedSettings.LauncherVersion} \n UpdaterURL: {FTPSharedSettings.UpdaterURL}");
-                    }
+                    LogManager.WriteLog($"Launcher version or updaterURL is null or empty. \n Version: {FTPSharedSettings.LauncherVersion} \n UpdaterURL: {FTPSharedSettings.UpdaterURL}");
                 }
             }
             catch (Exception er)

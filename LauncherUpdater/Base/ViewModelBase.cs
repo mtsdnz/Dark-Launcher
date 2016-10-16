@@ -7,18 +7,18 @@ namespace LauncherUpdater.Base
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        public ViewModelBase()
+        protected ViewModelBase()
         {
-            if (!loaded.Contains(this))
-                loaded.Add(this);
+            if (!Loaded.Contains(this))
+                Loaded.Add(this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private static List<ViewModelBase> loaded = new List<ViewModelBase>();
+        private static readonly List<ViewModelBase> Loaded = new List<ViewModelBase>();
         public static T InstanceOf<T>() where T : ViewModelBase
         {
-            return loaded.OfType<T>().FirstOrDefault() ?? Activator.CreateInstance<T>();
+            return Loaded.OfType<T>().FirstOrDefault() ?? Activator.CreateInstance<T>();
         }
 
         protected void OnPropertyChanged(string propertyName = null)

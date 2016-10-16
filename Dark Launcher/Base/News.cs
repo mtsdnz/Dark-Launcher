@@ -3,25 +3,25 @@ using System;
 
 namespace Dark_Launcher.Base
 {
-    public struct News
+    public sealed class News
     {
         public string Date { get; set; }
 
-        private Uri url;
+        private Uri _url;
         public string Url
         {
-            get { return url.ToString(); }
-            set { url = new Uri(value); }
+            get { return _url.ToString(); }
+            set { _url = new Uri(value); }
         }
 
-        private string title;
+        private string _title;
         public string Title
         {
-            get { return title; }
+            get { return _title; }
             set
             {
-                value = (value.Length > LauncherConstants.NewsMaxTitleLength) ? value.Substring(0, LauncherConstants.NewsMaxTitleLength) + "..." : value;
-                title = "- " + value;
+                value = value.Length > LauncherConstants.NewsMaxTitleLength ? value.Substring(0, LauncherConstants.NewsMaxTitleLength) + "..." : value;
+                _title = "- " + value;
             }
         }
     }

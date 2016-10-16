@@ -1,11 +1,12 @@
 ﻿namespace Dark_Launcher.Constants
 {
-    internal sealed class FTPSettings
+    internal sealed class FtpSettings
     {
         //the configurations below are loaded from LauncherConfig.xml
-        public static string FileListURL;
-        public static string ClientMirrorURL;
-        public static string ForumURL;
-        public static string XMLNewsURL;
+        internal static string FileListUrl;
+        internal static string BlackListUrl;
+        internal static string ClientMirrorUrl;
+        internal static string ForumUrl;
+        internal static string XmlNewsUrl;
     }
 }
