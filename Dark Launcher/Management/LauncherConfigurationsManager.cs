@@ -54,8 +54,6 @@ namespace Dark_Launcher.Management
                 LauncherSettings.ShowNews = bool.Parse(newsNode.SelectSingleNode("showNews").InnerText);
 
                 LauncherSettings.IsOnMaintenance = bool.Parse(internalConfigsNode.SelectSingleNode("maintenance").InnerText);
-                LauncherSettings.ShowSpeed = bool.Parse(internalConfigsNode.SelectSingleNode("showSpeed").InnerText);
-                
 
                 if (!HasLoadedAllInternalConfigs(FTPSharedSettings.LauncherVersion, FTPSharedSettings.UpdaterURL, FtpSettings.ClientMirrorUrl, FtpSettings.FileListUrl, FtpSettings.ForumUrl, FtpSettings.XmlNewsUrl))
                 {
